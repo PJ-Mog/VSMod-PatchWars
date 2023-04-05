@@ -1,0 +1,15 @@
+[
+  {
+    "op": "replace",
+    "path": "/1/file",
+    "value": "1success.json",
+    "file": "patchwars:patches/patchesfortesting.json"
+  },
+  {
+    "op": "replace",
+    "path": "/1/file",
+    "value": "1failed1.json",
+    "file": "patchwars:patches/patchesfortesting.json",
+    "order": 0.5
+  }
+]

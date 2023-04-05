@@ -1,0 +1,8 @@
+[
+  {
+    "op": "replace",
+    "path": "/0/file",
+    "value": "0success.json",
+    "file": "patchwars:patches/patchesfortesting.json"
+  }
+]

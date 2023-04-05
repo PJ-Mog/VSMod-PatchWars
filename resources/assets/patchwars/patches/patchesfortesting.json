@@ -1,0 +1,20 @@
+[
+  {
+    "op": "replace",
+    "path": "/imadethisup",
+    "value": "testvalue",
+    "file": "patchwars:0failed.json"
+  },
+  {
+    "op": "replace",
+    "path": "/imadethisup",
+    "value": "testvalue",
+    "file": "patchwars:1failed.json"
+  },
+  {
+    "op": "replace",
+    "path": "/imadethisup",
+    "value": "testvalue",
+    "file": "patchwars:2failed.json"
+  }
+]
