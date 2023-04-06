@@ -149,6 +149,47 @@ namespace PatchWars {
         notFound++;
         return;
       }
+
+      if (jsonPatch.JsonPath != null) {
+        JToken assetToken;
+        try {
+          assetToken = JToken.Parse(asset.ToText());
+        }
+        catch (Exception e) {
+          api.World.Logger.Error("Prepatch {0} (target: {2}) failed probably because the syntax of the value is broken: {1}", jsonPatch, e, loc);
+          errorCount++;
+          return;
+        }
+        List<string> possiblePaths = null;
+        try {
+          possiblePaths = assetToken.SelectTokens(jsonPatch.JsonPath)?.Select(jToken => jToken.GetJsonPointer()).ToList();
+        }
+        catch (Exception e) {
+          api.World.Logger.Error("Prepatch {0}: Error parsing provided JsonPath: {1}", jsonPatch, e);
+          errorCount++;
+          return;
+        }
+        if (possiblePaths == null || possiblePaths.Count == 0) {
+          api.Logger.VerboseDebug("Prepatch {0}: Found no paths matching the given JsonPath.", jsonPatch);
+          errorCount++;
+          return;
+        }
+        if (possiblePaths.Count > 1) {
+          if (!jsonPatch.PatchMultiple) {
+            api.Logger.VerboseDebug("Prepatch: {0} Found multiple paths matching the given JsonPath, but expected 1.", jsonPatch);
+            errorCount++;
+            return;
+          }
+          jsonPatch.JsonPath = null;
+          foreach (var path in possiblePaths) {
+            jsonPatch.Path = path + jsonPatch.JsonPathAppend;
+            ApplyPatch(api, jsonPatch, ref applied, ref notFound, ref errorCount);
+          }
+          return;
+        }
+        jsonPatch.Path = possiblePaths[0] + jsonPatch.JsonPathAppend;
+      }
+
       Operation op = null;
       switch (jsonPatch.Op) {
         case EnumJsonPatchOp.Add:
