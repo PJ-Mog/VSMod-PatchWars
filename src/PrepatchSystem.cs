@@ -176,18 +176,21 @@ namespace PatchWars {
         }
         if (possiblePaths.Count > 1) {
           if (!jsonPatch.PatchMultiple) {
-            api.Logger.VerboseDebug("Prepatch: {0} Found multiple paths matching the given JsonPath, but expected 1.", jsonPatch);
+            api.Logger.VerboseDebug("Prepatch: {0} Found multiple paths matching the given JsonPath, but expected 1. ({1})", jsonPatch, string.Join(", ", possiblePaths));
             errorCount++;
             return;
           }
           jsonPatch.JsonPath = null;
           foreach (var path in possiblePaths) {
             jsonPatch.Path = path + jsonPatch.JsonPathAppend;
+            api.Logger.Debug("Prepatch: Applying pseudo-patch for path {0} to {1}", jsonPatch.Path, jsonPatch.File);
             ApplyPatch(api, jsonPatch, ref applied, ref notFound, ref errorCount);
           }
           return;
         }
         jsonPatch.Path = possiblePaths[0] + jsonPatch.JsonPathAppend;
+        api.Logger.Debug("Prepatch: Applying pseudo-patch for path {0} to {1}", jsonPatch.Path, jsonPatch.File);
+
       }
 
       Operation op = null;
