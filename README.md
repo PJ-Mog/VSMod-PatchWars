@@ -65,7 +65,7 @@ If you were to write a patch file for this in the vanilla patching system (or us
 ]
 ```
 
-These patches are brittle to any changes to the drop tables in vanilla as well as if any other mods make changes as the indexes of specific elements react to those changes. Also, you and anyone reading your patch have no idea which item in the drop table is being changed without referencing `pan.json`.
+These patches are brittle to any changes to the drop tables in vanilla as well as from other mods due to the array indexes shifting from additions and deletions. Also, you and anyone reading your patch have no idea which item in the drop table is being changed without referencing `pan.json`.
 
 Using a JPath query instead, your patch might look like this:
 
