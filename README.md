@@ -92,6 +92,21 @@ The remaining portion of the query, `.chance.avg`, continues traversing the tree
 
 This patch file now has the flexibility to handle many potential changes from vanilla and third party mods.
 
+As a final example, the below patch would raise the chance for cabbage seed drops to 1 for all crop stages where the current chance is less than 1.
+
+```json
+[
+  {
+    "op": "replace",
+    "path": "$.dropsByType.*..[?(@.code == 'seeds-cabbage' && @..avg < 1)]..avg",
+    "value": 1,
+    "patchMultiple": true,
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "side": "Server"
+  }
+]
+```
+
 ### Debugging
 
 Log messages have been expanded to help with troubleshooting. Along with standard errors and summaries that appear in `server-main` and `client-main`, there are additional messages located in `server-debug` and `client-debug` to further explain both failed and successful patches.
