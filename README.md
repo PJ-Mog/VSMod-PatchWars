@@ -94,7 +94,8 @@ This patch file now has the flexibility to handle many potential changes from va
 
 ### Debugging
 
-Log messages have been expanded to help with troubleshooting. In addition to standard errors and summaries that appear in `server-main` and `client-main`, there are additional messages located in `server-debug` and `client-debug` to further explain both failed and successful patches.
+Log messages have been expanded to help with troubleshooting. Along with standard errors and summaries that appear in `server-main` and `client-main`, there are additional messages located in `server-debug` and `client-debug` to further explain both failed and successful patches.
+
 ```
 [VerboseDebug] Patch 0 in patchwars:prepatches/jpathtest1.json: Found 2 paths using supplied JPath ($.attributes.panningDrops.*..[?(@..code == 'gear-temporal')].chance.avg): /attributes/panningDrops/@(bonysoil|bonysoil-.*)/17/chance/avg, /attributes/panningDrops/@(sand|gravel)-.*/19/chance/avg
 ```
