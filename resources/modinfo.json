@@ -12,6 +12,6 @@
     "survival": ""
   },
   "side": "Universal",
-  "requiredOnClient": false,
-  "requiredOnServer": false
+  "requiredOnClient": true,
+  "requiredOnServer": true
 }
