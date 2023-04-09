@@ -26,17 +26,17 @@ When performing an `add` or `addeach` patch operation using JPath queries, becau
 You'd like to mod the panning loot table so that temporal gears are far more common from both sand/gravel and bony soil. (Excerpt from `pan.json` as of Vintage Story v1.18.0)
 ```json
 {
-  code: "pan",
-  attributes: {
-    panningDrops: {
+  "code": "pan",
+  "attributes": {
+    "panningDrops": {
       "@(bonysoil|bonysoil-.*)": [
         // ... 17 other items not shown
-        { type: "item", code: "gear-temporal",  chance: { avg: 0.001, var: 0 }  },
+        { "type": "item", "code": "gear-temporal",  "chance": { "avg": 0.001, "var": 0 }  },
         // ...
       ],
       "@(sand|gravel)-.*": [
         // ... 19 other items not shown
-        { type: "item", code: "gear-temporal",  chance: { avg: 0.0005, var: 0 }  },
+        { "type": "item", "code": "gear-temporal",  "chance": { "avg": 0.0005, "var": 0 }  },
         // ...
       ]
     }
