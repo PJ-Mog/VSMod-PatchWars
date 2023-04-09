@@ -6,7 +6,7 @@ using Vintagestory.ServerMods.NoObf;
 
 namespace PatchWars {
   [HarmonyPatch]
-  internal class ModJsonPatchLoaderPatch : ModSystem {
+  internal class ModJsonPatchLoaderDisabler : ModSystem {
     public override double ExecuteOrder() {
       return 0.001;
     }
@@ -22,9 +22,10 @@ namespace PatchWars {
     }
 
     [HarmonyPatch(typeof(ModJsonPatchLoader), "AssetsLoaded")]
-    [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> AssetsLoaded_Transpiler(IEnumerable<CodeInstruction> instructions) {
-      return instructions;
+    [HarmonyPrefix]
+    private static bool ShouldRunVanillaJsonPatcher(ICoreAPI api) {
+      api.Logger.Notification("Patch Wars has disabled the vanilla Json Patch Loader.");
+      return false;
     }
   }
 }

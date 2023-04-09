@@ -1,7 +1,7 @@
 [
   {
     "op": "replace",
-    "jsonPath": "$.attributes.panningDrops.*..[?(@..code == 'gear-temporal')].chance.avg",
+    "path": "$.attributes.panningDrops.*..[?(@..code == 'gear-temporal')].chance.avg",
     "value": 20,
     "patchMultiple": true,
     "file": "game:blocktypes/wood/pan.json",

@@ -1,8 +1,8 @@
 [
   {
     "op": "add",
-    "jsonPath": "$[?(@.output.attributes.lining == 'silver')].output",
-    "jsonPathAppend": "/quantity",
+    "path": "$[?(@.output.attributes.lining == 'silver')].output",
+    "pathAppend": "/quantity",
     "patchMultiple": true,
     "value": 2,
     "file": "game:recipes/grid/lantern.json",
