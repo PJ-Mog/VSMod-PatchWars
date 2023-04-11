@@ -2,8 +2,8 @@
   "type": "Code",
   "name": "Patch Wars",
   "modid": "patchwars",
-  "version": "0.0.1",
-  "description": "Options for ordering JSON patches.",
+  "version": "0.1.0",
+  "description": "Enhanced JSON patching",
   "website": "https://github.com/PJ-Mog/VSMod-PatchWars",
   "authors": [ "JapanHasRice" ],
   "contributors": [],
@@ -12,6 +12,6 @@
     "survival": ""
   },
   "side": "Universal",
-  "requiredOnClient": false,
-  "requiredOnServer": false
+  "requiredOnClient": true,
+  "requiredOnServer": true
 }

@@ -1,0 +1,11 @@
+[
+  {
+    "op": "add",
+    "path": "$[?(@.output.attributes.lining == 'silver')].output",
+    "pathAppend": "/quantity",
+    "patchMultiple": true,
+    "value": 2,
+    "file": "game:recipes/grid/lantern.json",
+    "side": "Server"
+  }
+]

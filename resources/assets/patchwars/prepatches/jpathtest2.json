@@ -1,0 +1,34 @@
+[
+  {
+    "op": "remove",
+    "path": "$.dropsByType.*..[?(@..var)].var",
+    "patchMultiple": true,
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "side": "Server"
+  },
+  {
+    "op": "replace",
+    "path": "$.dropsByType.*..[?(@.code == 'vegetable-cabbage')]..avg",
+    "value": 20,
+    "patchMultiple": true,
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "side": "Server"
+  },
+  {
+    "op": "add",
+    "path": "$.dropsByType.*",
+    "pathAppend": "/-",
+    "value": { "type": "item", "code": "gear-temporal", "quantity": { "avg": 4 } },
+    "patchMultiple": true,
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "side": "Server"
+  },
+  {
+    "op": "replace",
+    "path": "$.dropsByType.*..[?(@.code == 'seeds-cabbage' && @..avg < 1)]..avg",
+    "value": 3,
+    "patchMultiple": true,
+    "file": "game:blocktypes/plant/crop/cabbage.json",
+    "side": "Server"
+  }
+]
