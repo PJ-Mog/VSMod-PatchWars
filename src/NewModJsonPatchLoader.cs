@@ -75,7 +75,7 @@ namespace PatchWars {
         return;
       }
 
-      for (int i = 0; i < patches.Length; i++) {
+      for (int i = 0; i < patches?.Length; i++) {
         patches[i].SourceFileForLogging = asset.Location;
         patches[i].IndexForLogging = i;
         ApplyPatch(patches[i]);
