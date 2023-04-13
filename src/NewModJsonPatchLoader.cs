@@ -95,8 +95,9 @@ namespace PatchWars {
 
       if (patch.File.Path.EndsWith("*")) {
         foreach (IAsset foundAsset in api.Assets.GetMany(patch.File.Path.TrimEnd('*'), patch.File.Domain, loadAsset: false)) {
-          patch.File = foundAsset.Location;
-          ApplyPatch(patch);
+          var clonedPatch = patch.ShallowClone();
+          clonedPatch.File = foundAsset.Location;
+          ApplyPatch(clonedPatch);
         }
         return;
       }
@@ -169,7 +170,7 @@ namespace PatchWars {
         case EnumJsonPatchOp.AddEach:
           if (patch.Value == null) {
             errorCount++;
-            api.Logger.Error("Patch {0} in {1} failed probably because it is an add each operation and the value property is not set or misspelled", patch.IndexForLogging, patch.SourceFileForLogging);
+            api.Logger.Error("Patch {0} in {1} failed probably because it is an addeach operation and the value property is not set or misspelled", patch.IndexForLogging, patch.SourceFileForLogging);
             return false;
           }
           op = new AddEachOperation {
@@ -213,12 +214,12 @@ namespace PatchWars {
       }
       catch (PathNotFoundException p) {
         errorCount++;
-        api.Logger.Error("Patch {0} (target: {4}) in {1} failed because supplied path {2} is invalid: {3}", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, p.Message, patch.File);
+        api.Logger.Error("Patch {0} in {1} failed because supplied path {2} is invalid in {3}: {4}", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, patch.File, p.Message);
         return false;
       }
       catch (Exception e) {
         errorCount++;
-        api.Logger.Error("Patch {0} (target: {3}) in {1} failed, following Exception was thrown: {2}", patch.IndexForLogging, patch.SourceFileForLogging, e.Message, patch.File);
+        api.Logger.Error("Patch {0} in {1} failed, following Exception was thrown while parsing {2}: {3}", patch.IndexForLogging, patch.SourceFileForLogging, patch.File, e.Message);
         return false;
       }
       appliedCount++;
@@ -232,26 +233,26 @@ namespace PatchWars {
       }
       catch (Exception e) {
         errorCount++;
-        api.Logger.Error("Patch {0} in {1}: Failed parsing target file with supplied JPath {2}: {3}", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, e);
+        api.Logger.Error("Patch {0} in {1}: Failed parsing {2} with supplied JPath {3} {4}", patch.IndexForLogging, patch.SourceFileForLogging, patch.File, patch.Path, e);
         return false;
       }
 
       if (matchedPaths.Count == 0) {
         errorCount++;
-        api.Logger.VerboseDebug("Patch {0} in {1}: Failed because the supplied JPath ({2}) found no results.", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path);
+        api.Logger.VerboseDebug("Patch {0} in {1}: Failed because the supplied JPath {2} found no results in {3}.", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, patch.File);
         return false;
       }
+
+      api.Logger.VerboseDebug("Patch {0} in {1}: Found {2} paths in {3} using supplied JPath {4}" + Environment.NewLine + "{5}", patch.IndexForLogging, patch.SourceFileForLogging, matchedPaths.Count, patch.File, patch.Path, string.Join("," + Environment.NewLine, matchedPaths));
 
       if (matchedPaths.Count == 1) {
         patch.Path = matchedPaths[0];
         return ApplyPatch(patch, targetToken);
       }
 
-      api.Logger.VerboseDebug("Patch {0} in {1}: Found {2} paths using supplied JPath ({3}): {4}", patch.IndexForLogging, patch.SourceFileForLogging, matchedPaths.Count, patch.Path, string.Join(", ", matchedPaths));
-
       if (!patch.PatchMultiple) {
         errorCount++;
-        api.Logger.VerboseDebug("Patch {0} in {1}: Failed because the supplied JPath ({2}) found multiple results, but expected one. Set {3} to patch all results.", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, nameof(patch.PatchMultiple));
+        api.Logger.VerboseDebug("Patch {0} in {1}: Failed because the supplied JPath {2} found multiple results in {3}, but expected one. Set {4} to patch all results.", patch.IndexForLogging, patch.SourceFileForLogging, patch.Path, patch.File, nameof(patch.PatchMultiple));
         return false;
       }
 
@@ -281,7 +282,7 @@ namespace PatchWars {
       IAttribute attr = api.World.Config?[patch.Condition.When];
       if (attr == null) {
         unmetConditionCount++;
-        api.Logger.VerboseDebug("Patch file {0}, patch {1}: WorldConfig '{2}' does not exist.", patch.SourceFileForLogging, patch.IndexForLogging, patch.Condition.When);
+        api.Logger.VerboseDebug("Patch {0} in {1}: WorldConfig '{2}' does not exist.", patch.IndexForLogging, patch.SourceFileForLogging, patch.Condition.When);
         return false;
       }
 
@@ -293,7 +294,7 @@ namespace PatchWars {
       string configValue = attr.GetValue()?.ToString() ?? "";
       if (!patch.Condition.IsValue.Equals(configValue, StringComparison.InvariantCultureIgnoreCase)) {
         unmetConditionCount++;
-        api.Logger.VerboseDebug("Patch file {0}, patch {1}: Unmet IsValue condition ({2} != {3})", patch.SourceFileForLogging, patch.IndexForLogging, patch.Condition.IsValue, configValue);
+        api.Logger.VerboseDebug("Patch {0} in {1}: Unmet IsValue condition ({2} != {3})", patch.IndexForLogging, patch.SourceFileForLogging, patch.Condition.IsValue, configValue);
         return false;
       }
 
@@ -308,7 +309,7 @@ namespace PatchWars {
       foreach (var dependency in patch.DependsOn) {
         if (api.ModLoader.IsModEnabled(dependency.modid) == dependency.invert) {
           unmetConditionCount++;
-          api.Logger.VerboseDebug("Patch file {0}, patch {1}: Unmet DependsOn condition ({2})", patch.SourceFileForLogging, patch.IndexForLogging, (dependency.invert ? "!" : "") + dependency.modid);
+          api.Logger.VerboseDebug("Patch {0} in {1}: Unmet DependsOn condition ({2})", patch.IndexForLogging, patch.SourceFileForLogging, (dependency.invert ? "!" : "") + dependency.modid);
           return false;
         }
       }
