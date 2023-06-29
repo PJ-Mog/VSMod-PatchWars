@@ -11,7 +11,7 @@ namespace PatchWars {
 
     public override void StartPre(ICoreAPI api) {
       base.StartPre(api);
-      prepatchesCategory = new AssetCategory("prepatches", AffectsGameplay: true, EnumAppSide.Universal);
+      prepatchesCategory = new AssetCategory("postpatches", AffectsGameplay: true, EnumAppSide.Universal);
     }
   }
 }
