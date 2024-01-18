@@ -6,9 +6,9 @@
   "description": "Enhanced JSON patching",
   "website": "https://github.com/PJ-Mog/VSMod-PatchWars",
   "authors": [ "JapanHasRice" ],
-  "contributors": [],
+  "contributors": [ "MrUnknown404" ],
   "dependencies": {
-    "game": "",
+    "game": "1.19.0",
     "survival": ""
   },
   "side": "Universal",
