@@ -2,7 +2,7 @@ using Vintagestory.API.Common;
 
 namespace PatchWars {
   public class PostpatchSystem : NewModJsonPatchLoader {
-    private static AssetCategory prepatchesCategory;
+    private static AssetCategory postpatchesCategory;
 
     public override double ExecuteOrder() => base.ExecuteOrder() + 0.00001;
 
@@ -11,7 +11,7 @@ namespace PatchWars {
 
     public override void StartPre(ICoreAPI api) {
       base.StartPre(api);
-      prepatchesCategory = new AssetCategory("postpatches", AffectsGameplay: true, EnumAppSide.Universal);
+      postpatchesCategory = new AssetCategory("postpatches", AffectsGameplay: true, EnumAppSide.Universal);
     }
   }
 }
