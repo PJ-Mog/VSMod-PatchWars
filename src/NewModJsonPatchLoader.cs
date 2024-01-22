@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JsonPatch.Operations;
+using JsonPatch.Operations.Abstractions;
 using Newtonsoft.Json.Linq;
 using Tavis;
 using Vintagestory.API.Common;
@@ -162,7 +164,18 @@ namespace PatchWars {
             api.Logger.Error("Patch {0} in {1} failed probably because it is an add operation and the value property is not set or misspelled", patch.IndexForLogging, patch.SourceFileForLogging);
             return false;
           }
-          op = new AddOperation {
+          op = new AddReplaceOperation {
+            Path = new JsonPointer(patch.Path),
+            Value = patch.Value.Token
+          };
+          break;
+        case EnumJsonPatchOp.AddMerge:
+          if (patch.Value == null) {
+            errorCount++;
+            api.Logger.Error("Patch {0} in {1} failed probably because it is an addmerge operation and the value property is not set or misspelled", patch.IndexForLogging, patch.SourceFileForLogging);
+            return false;
+          }
+          op = new AddMergeOperation {
             Path = new JsonPointer(patch.Path),
             Value = patch.Value.Token
           };

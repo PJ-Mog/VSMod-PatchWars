@@ -1,9 +1,8 @@
 using Newtonsoft.Json;
 using Vintagestory.API.Common;
-using Vintagestory.ServerMods.NoObf;
 
 namespace PatchWars {
-  public class JsonPatchExtended : JsonPatch {
+  public class JsonPatchExtended : Vintagestory.ServerMods.NoObf.JsonPatch {
     public string PathAppend;
     public bool PatchMultiple = false;
 
@@ -16,20 +15,20 @@ namespace PatchWars {
 
     public JsonPatchExtended ShallowClone() {
       return new JsonPatchExtended {
-        Op = this.Op,
-        File = this.File,
-        FromPath = this.FromPath,
-        Path = this.Path,
-        DependsOn = this.DependsOn,
-        Enabled = this.Enabled,
-        Side = this.Side,
-        Condition = this.Condition,
-        Value = this.Value,
+        Op = Op,
+        File = File,
+        FromPath = FromPath,
+        Path = Path,
+        DependsOn = DependsOn,
+        Enabled = Enabled,
+        Side = Side,
+        Condition = Condition,
+        Value = Value,
 
-        PathAppend = this.PathAppend,
-        PatchMultiple = this.PatchMultiple,
-        SourceFileForLogging = this.SourceFileForLogging,
-        IndexForLogging = this.IndexForLogging
+        PathAppend = PathAppend,
+        PatchMultiple = PatchMultiple,
+        SourceFileForLogging = SourceFileForLogging,
+        IndexForLogging = IndexForLogging
       };
     }
   }
